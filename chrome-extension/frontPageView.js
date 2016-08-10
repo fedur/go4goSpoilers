@@ -1,0 +1,2 @@
+alert('frontPageView.js');
+
