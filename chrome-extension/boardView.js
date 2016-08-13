@@ -6,7 +6,7 @@ for (var i = 0; i < boldTags.length; i++) {
 	var execObj = isTheResult.exec(boldTags[i].innerText);
 	if (execObj != null) {
 		boldTags[i].innerText = boldTags[i].innerText.replace(execObj[0], "");
-		var spoilersButton = $("<div id=result> <span id=spoilerTitle>Spoilers:  </span>" +
+		var spoilersButton = $("<div id=result> <span class=spoilerTitle>Spoilers:  </span>" +
 							"<span class=gameResult>" + execObj[0] + "</span>" + 
 							"<span class=spoilersButton> [+] </span> </div>");
 		$(boldTags[i]).append(spoilersButton);

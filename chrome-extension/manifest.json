@@ -27,7 +27,7 @@
     {
       "matches": ["http://www.go4go.net/go/games/*"],
       "exclude_matches": ["http://www.go4go.net/go/games/sgfview/*"],
-      "js": ["gamesView.js"],
+      "js": ["jquery-2.2.3.min.js", "gamesView.js"],
       "run_at": "document_end"
     }
   ],

@@ -1,47 +1,58 @@
 var boldTags = document.querySelectorAll('b');
+
 for (var i = 0; i < boldTags.length; i++) {
 
 	var isAPlayerName = /\d(?:p|d)$/; 
+	var isAResult = /Result:.*/;
+
+
+	// We iterate through the bold tags (instead of all the tags) to find the blocks containing the player info..
 	if (isAPlayerName.test(boldTags[i].innerText)) {
-		console.log(boldTags[i]);
-
-		///////////////////////////////////////////
-		// Actions concerning the player info
-		/////////////////////////////////////////
-
-		boldTags[i].className = "player"; // We give it a class for future use.
-		boldTags[i].style.fontWeight = "normal";
 		
-		///////////////////////////////////////////
-		// Actions concerning the result node
-		/////////////////////////////////////////
-
-		var childs = boldTags[i].parentNode.childNodes;
-		console.log(childs);
-		
-		var resultNode = childs[childs.length - 1];
-		console.log(resultNode);
-
-		// We find the text Node that shows the result
-		var isAResult = /Result:/;
-		while (resultNode.nodeType != 3 && !isAResult.test(resultNode.innerText)) {
-			resultNode = resultNode.previousSibling;
-		}
-
-		var parent = resultNode.parentNode;
-		var nextElem = resultNode.nextSibling;
-
-		var spanNode = document.createElement("span"); 
-		spanNode.appendChild(resultNode);
-
-		 // if the result node is the last element...
-		if (nextElem == null)
-			parent.appendChild(spanNode);
-
-		else
-			parent.insertBefore(spanNode,nextElem);
-
-		spanNode.style.display = "none";  
+		var gameInfos = $(boldTags[i].parentNode.childNodes);
+		gameInfos.each( function(index) {
+			if ($(this).is("b")) {
+				if (isAPlayerName.test(this.innerText)) {
+					this.className = "winner";
+					this.style.fontWeight = "normal";
+				}
+			} 
+				
+			else if (isAResult.test($(this).text())) {
+				console.log("Allooo");
+				$(this).replaceWith("<span class=spoilerTitle> Spoilers:  </span><span class=gameResult style='display:none'>" + $(this).text() + "</span><span class=spoilersButton> [+] </span>");
+			}
+			
+		});
 	}
 }
+
+$(".spoilersButton").click( function (){
+	// If Spoiler is not visible
+	if (this.innerText.search(/.*\+.*/) != -1) {
+		this.innerText = "[-]";
+		$(this.previousElementSibling).show();
+		$(this.previousElementSibling.previousElementSibling).hide();
+
+		var currentElement = this;
+		while (!$(currentElement).hasClass("winner"))
+			currentElement = currentElement.previousElementSibling;
+
+		currentElement.style.fontWeight = "bold";
+	}
+
+	// if Spoiler is already visible
+	else {
+		this.innerText = "[+]";
+		$(this.previousSibling).hide();
+		$(this.previousElementSibling.previousElementSibling).show();
+
+		var currentElement = this;
+		while (!$(currentElement).hasClass("winner"))
+			currentElement = currentElement.previousElementSibling;
+
+		currentElement.style.fontWeight = "normal";
+	}
+
+});
 

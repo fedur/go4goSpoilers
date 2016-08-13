@@ -8,6 +8,6 @@ b, strong {
 	cursor: pointer;
 }
 
-#spoilerTitle {
+.spoilerTitle {
 	font-style: italic;
 }
